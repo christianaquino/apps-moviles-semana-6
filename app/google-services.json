@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "306557278881",
+    "project_id": "login-semana-6",
+    "storage_bucket": "login-semana-6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:306557278881:android:04dba686eae0cb25896ee0",
+        "android_client_info": {
+          "package_name": "com.example.loginsemana6"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "306557278881-fugas9tbumcb4vqshknhf2rj4h935std.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCv8a7dVlKDKkUJlURVMuxvOTk-lZSn3WY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "306557278881-fugas9tbumcb4vqshknhf2rj4h935std.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
