@@ -3,7 +3,6 @@ package com.example.loginsemana6.data
 import com.example.loginsemana6.data.model.LoggedInUser
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.tasks.await
-import java.io.IOException
 import java.lang.Exception
 
 /**
@@ -12,22 +11,22 @@ import java.lang.Exception
 class LoginDataSource {
 
     private lateinit var result: Result<LoggedInUser>
-    suspend fun login(username: String, password: String): Result<LoggedInUser> {
-        val auth = FirebaseAuth.getInstance();
+    private var auth = FirebaseAuth.getInstance()
 
-        try {
+    suspend fun login(username: String, password: String): Result<LoggedInUser> {
+        result = try {
             val loginResult = auth.signInWithEmailAndPassword(username, password).await()
-            val user = loginResult.user
-            val fakeUser = LoggedInUser(user.toString(), user.toString())
-            result = Result.Success(fakeUser)
+            val authUser = loginResult.user
+            val loggedInUser = LoggedInUser(authUser?.uid.toString(), authUser?.email.toString())
+            Result.Success(loggedInUser)
         } catch (e: Exception) {
-            result = Result.Error(Exception("Login error"))
+            Result.Error(Exception("Login error"))
         }
 
-        return result;
+        return result
     }
 
     fun logout() {
-        // TODO: revoke authentication
+        auth.signOut()
     }
 }
