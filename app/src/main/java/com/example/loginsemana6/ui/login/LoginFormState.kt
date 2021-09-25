@@ -6,5 +6,6 @@ package com.example.loginsemana6.ui.login
 data class LoginFormState(
     val usernameError: Int? = null,
     val passwordError: Int? = null,
-    val isDataValid: Boolean = false
+    val isDataValid: Boolean = false,
+    val isFetchingData: Boolean = false
 )

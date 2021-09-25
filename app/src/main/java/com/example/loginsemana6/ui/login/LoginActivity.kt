@@ -13,26 +13,20 @@ import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.Toast
 import com.example.loginsemana6.databinding.ActivityLoginBinding
+import com.google.firebase.*
 
 import com.example.loginsemana6.R
-import com.google.firebase.database.ktx.database
 
-import com.google.firebase.ktx.Firebase
-
+import java.util.*
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var binding: ActivityLoginBinding
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-// Write a message to the database
-        val database = Firebase.database
-        val myRef = database.getReference("message")
-
-        myRef.setValue("Hello, World!")
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -51,6 +45,13 @@ class LoginActivity : AppCompatActivity() {
             // disable login button unless both username / password is valid
             login.isEnabled = loginState.isDataValid
 
+            // display loading if view is fetching data
+            if(loginState.isFetchingData) {
+                loading.visibility = View.VISIBLE
+            } else {
+                loading.visibility = View.GONE
+            }
+
             if (loginState.usernameError != null) {
                 username.error = getString(loginState.usernameError)
             }
@@ -63,6 +64,7 @@ class LoginActivity : AppCompatActivity() {
             val loginResult = it ?: return@Observer
 
             loading.visibility = View.GONE
+
             if (loginResult.error != null) {
                 showLoginFailed(loginResult.error)
             }
@@ -72,7 +74,7 @@ class LoginActivity : AppCompatActivity() {
             setResult(Activity.RESULT_OK)
 
             //Complete and destroy login activity once successful
-            finish()
+            //finish()
         })
 
         username.afterTextChanged {
