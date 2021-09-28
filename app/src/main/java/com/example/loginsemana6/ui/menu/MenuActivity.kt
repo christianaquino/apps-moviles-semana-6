@@ -6,6 +6,7 @@ import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import com.example.loginsemana6.R
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -38,7 +39,7 @@ class MenuActivity : AppCompatActivity() {
 
         fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
             val database = Firebase.database
-            val myRef = database.getReference("message")
+            val myRef = database.getReference("location")
             val locationString = "lat: " + location?.latitude + ", long: " + location?.longitude
 
             myRef.setValue(locationString)
