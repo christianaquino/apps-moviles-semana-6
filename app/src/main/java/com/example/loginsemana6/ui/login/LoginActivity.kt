@@ -1,6 +1,7 @@
 package com.example.loginsemana6.ui.login
 
 import android.app.Activity
+import android.content.Intent
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -16,6 +17,7 @@ import com.example.loginsemana6.databinding.ActivityLoginBinding
 import com.google.firebase.*
 
 import com.example.loginsemana6.R
+import com.example.loginsemana6.ui.menu.MenuActivity
 
 import java.util.*
 
@@ -74,7 +76,12 @@ class LoginActivity : AppCompatActivity() {
             setResult(Activity.RESULT_OK)
 
             //Complete and destroy login activity once successful
-            //finish()
+            val intent = Intent(
+                this,
+                MenuActivity::class.java
+            )
+            startActivity(intent)
+            finish()
         })
 
         username.afterTextChanged {
