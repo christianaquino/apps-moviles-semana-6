@@ -65,24 +65,27 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel.loginResult.observe(this@LoginActivity, Observer {
             val loginResult = it ?: return@Observer
 
+            //hide loading element
             loading.visibility = View.GONE
 
             if (loginResult.error != null) {
+                //show Toast login error
                 showLoginFailed(loginResult.error)
             }
 
             if (loginResult.success != null) {
+                //show Toast login success
                 updateUiWithUser(loginResult.success)
-
                 setResult(Activity.RESULT_OK)
 
-                //Complete and destroy login activity once successful
+                //start MenuActivity
                 val intent = Intent(
                     this,
                     MenuActivity::class.java,
                 )
 
                 startActivity(intent)
+                //complete and destroy login activity once successful
                 finish()
             }
         })
@@ -105,6 +108,7 @@ class LoginActivity : AppCompatActivity() {
             setOnEditorActionListener { _, actionId, _ ->
                 when (actionId) {
                     EditorInfo.IME_ACTION_DONE ->
+                        //call login method
                         loginViewModel.login(
                             username.text.toString(),
                             password.text.toString()

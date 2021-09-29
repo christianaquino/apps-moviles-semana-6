@@ -37,10 +37,10 @@ class MenuActivity : AppCompatActivity() {
             return
         }
 
-        fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+        fusedLocationClient.lastLocation.addOnSuccessListener { location: Location ->
             val database = Firebase.database
             val myRef = database.getReference("location")
-            val locationString = "lat: " + location?.latitude + ", long: " + location?.longitude
+            val locationString = "lat: " + location.latitude + ", long: " + location.longitude
 
             myRef.setValue(locationString)
         }
