@@ -2,6 +2,7 @@ package com.example.loginsemana6.ui.maps
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
@@ -20,7 +21,8 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -70,20 +72,28 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         fusedLocationClient.lastLocation.addOnSuccessListener { location: Location ->
-
+                    val monto = 34900
                     val myLocation = LatLng(location.latitude, location.longitude)
-                    val pedido = Pedido(37546, location)
+                    val pedido = Pedido(monto, location)
+                    val df = DecimalFormat("#.##")
+                    df.roundingMode = RoundingMode.CEILING
 
-                    findViewById<TextView>(R.id.total).text = "Total del pedido: CLP 3445544"
-                    findViewById<TextView>(R.id.distancia).text = "Distancia hasta tu domicilio: " + pedido.distancia + "Km"
-                    findViewById<TextView>(R.id.envio).text = "Costo del envío: CLP" + pedido.envio
+                    findViewById<TextView>(R.id.total).text = "CLP " + monto.toString()
+                    findViewById<TextView>(R.id.distancia).text = df.format(pedido.distancia) + " Km"
+                    findViewById<TextView>(R.id.envio).text = if (pedido.envio == 0.0f) { "¡Gratis!" } else { "CLP " + pedido.envio.toInt() }
 
                     mMap.addMarker(
-                        MarkerOptions().position(myLocation).title("Mi ubicación actual")
+                        MarkerOptions().position(myLocation).title(getAddress(location.latitude, location.longitude))
                     )
 
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 15.0f))
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 16.0f))
 
         }
+    }
+
+    private fun getAddress(lat: Double, lng: Double): String? {
+        val geocoder = Geocoder(this)
+        val list = geocoder.getFromLocation(lat,lng,1)
+        return list[0].getAddressLine(0)
     }
 }

@@ -10,5 +10,8 @@
     <string name="invalid_password">Password debe contener mas de 5 caracteres</string>
     <string name="login_failed">"El login falló"</string>
     <string name="txt_welcome">Bienvenido</string>
-    <string name="title_activity_maps">Mi pedido</string>
+    <string name="title_activity_maps">Resumen de compra</string>
+    <string name="txt_envio_label">Costo del envío:</string>
+    <string name="txt_monto_pedido_label">Tu pedido:</string>
+    <string name="txt_distancia_label">Hasta tu domicilio:</string>
 </resources>
