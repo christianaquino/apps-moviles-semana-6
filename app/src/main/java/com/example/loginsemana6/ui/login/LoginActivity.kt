@@ -17,7 +17,7 @@ import com.example.loginsemana6.databinding.ActivityLoginBinding
 import com.google.firebase.*
 
 import com.example.loginsemana6.R
-import com.example.loginsemana6.ui.menu.MenuActivity
+import com.example.loginsemana6.ui.maps.MapsActivity
 
 import java.util.*
 
@@ -78,10 +78,10 @@ class LoginActivity : AppCompatActivity() {
                 updateUiWithUser(loginResult.success)
                 setResult(Activity.RESULT_OK)
 
-                //start MenuActivity
+                //start Map
                 val intent = Intent(
                     this,
-                    MenuActivity::class.java,
+                    MapsActivity::class.java,
                 )
 
                 startActivity(intent)
