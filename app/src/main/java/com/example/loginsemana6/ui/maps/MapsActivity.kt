@@ -1,6 +1,7 @@
 package com.example.loginsemana6.ui.maps
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
@@ -21,6 +22,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.auth.FirebaseAuth
 import java.math.RoundingMode
 import java.text.DecimalFormat
 
@@ -29,6 +31,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMaps2Binding
+    private var auth = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +54,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
+    @SuppressLint("SetTextI18n")
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
@@ -72,15 +76,23 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         fusedLocationClient.lastLocation.addOnSuccessListener { location: Location ->
-                    val monto = 34900
                     val myLocation = LatLng(location.latitude, location.longitude)
-                    val pedido = Pedido(monto, location)
+                    val pedido = auth.currentUser?.email?.let { Pedido(it, location) }
+
+                    val montoEnvio = if (pedido?.envio == 0) {
+                        "¡Gratis!"
+                    } else {
+                        if (pedido?.envio == -1) {
+                            "No contamos con envío a tu dirección"
+                        } else "CLP " + pedido?.envio }
+
+
                     val df = DecimalFormat("#.##")
                     df.roundingMode = RoundingMode.CEILING
 
-                    findViewById<TextView>(R.id.total).text = "CLP " + monto.toString()
-                    findViewById<TextView>(R.id.distancia).text = df.format(pedido.distancia) + " Km"
-                    findViewById<TextView>(R.id.envio).text = if (pedido.envio == 0.0f) { "¡Gratis!" } else { "CLP " + pedido.envio.toInt() }
+                    findViewById<TextView>(R.id.total).text = "CLP " + pedido?.monto
+                    findViewById<TextView>(R.id.distancia).text = df.format(pedido?.distancia) + " Km"
+                    findViewById<TextView>(R.id.envio).text = montoEnvio
 
                     mMap.addMarker(
                         MarkerOptions().position(myLocation).title(getAddress(location.latitude, location.longitude))
